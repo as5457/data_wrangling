@@ -166,6 +166,201 @@ pups_data = read_csv(&quot;./data/FAS_pups.csv&quot;,
   col_types = &quot;ciiiii&quot;)
 pups_data = janitor::clean_names(pups_data)</code></pre>
 </div>
+<div id="select-variables" class="section level2">
+<h2>Select variables</h2>
+<pre class="r"><code>select(litters_data, group, litter_number, gd0_weight)</code></pre>
+<pre><code>## # A tibble: 49 x 3
+##   group litter_number gd0_weight
+##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;
+## 1 Con7  #85                 19.7
+## 2 Con7  #1/2/95/2           27  
+## 3 Con7  #5/5/3/83/3-3       26  
+## # ... with 46 more rows</code></pre>
+<pre class="r"><code>select(litters_data, -litter_number)</code></pre>
+<pre><code>## # A tibble: 49 x 7
+##   group gd0_weight gd18_weight gd_of_birth pups_born_alive pups_dead_birth
+##   &lt;chr&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;           &lt;int&gt;           &lt;int&gt;
+## 1 Con7        19.7        34.7          20               3               4
+## 2 Con7        27          42            19               8               0
+## 3 Con7        26          41.4          19               6               0
+## # ... with 46 more rows, and 1 more variable: pups_survive &lt;int&gt;</code></pre>
+</div>
+<div id="example-selecting-variables-from-the-pups-dataset" class="section level2">
+<h2>Example: selecting variables from the pups dataset</h2>
+<pre class="r"><code>select(pups_data, litter_number, sex, pd_ears)</code></pre>
+<pre><code>## # A tibble: 313 x 3
+##   litter_number   sex pd_ears
+##   &lt;chr&gt;         &lt;int&gt;   &lt;int&gt;
+## 1 #85               1       4
+## 2 #85               1       4
+## 3 #1/2/95/2         1       5
+## # ... with 310 more rows</code></pre>
+</div>
+<div id="filter-observations" class="section level2">
+<h2>Filter observations</h2>
+<pre class="r"><code>filter(litters_data, gd0_weight &lt; 25)</code></pre>
+<pre><code>## # A tibble: 20 x 8
+##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+##    &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;           &lt;int&gt;
+##  1 Con7  #85                 19.7        34.7          20               3
+##  2 Mod7  #59                 17          33.4          19               8
+##  3 Mod7  #103                21.4        42.1          19               9
+##  4 Mod7  #4/2/95/2           23.5        NA            19               9
+##  5 Mod7  #5/3/83/5-2         22.6        37            19               5
+##  6 Mod7  #106                21.7        37.8          20               5
+##  7 Mod7  #94/2               24.4        42.9          19               7
+##  8 Mod7  #62                 19.5        35.9          19               7
+##  9 Low7  #84/2               24.3        40.8          20               8
+## 10 Low7  #107                22.6        42.4          20               9
+## 11 Low7  #85/2               22.2        38.5          20               8
+## 12 Low7  #98                 23.8        43.8          20               9
+## 13 Low7  #102                22.6        43.3          20              11
+## 14 Low7  #101                23.8        42.7          20               9
+## 15 Low7  #112                23.9        40.5          19               6
+## 16 Mod8  #97                 24.5        42.8          20               8
+## 17 Low8  #53                 21.8        37.2          20               8
+## 18 Low8  #100                20          39.2          20               8
+## 19 Low8  #4/84               21.8        35.2          20               4
+## 20 Low8  #99                 23.5        39            20               6
+## # ... with 2 more variables: pups_dead_birth &lt;int&gt;, pups_survive &lt;int&gt;</code></pre>
+<pre class="r"><code>filter(litters_data, gd0_weight &gt;= 25)</code></pre>
+<pre><code>## # A tibble: 14 x 8
+##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+##    &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;           &lt;int&gt;
+##  1 Con7  #1/2/95/2           27          42            19               8
+##  2 Con7  #5/5/3/83/3-3       26          41.4          19               6
+##  3 Con7  #5/4/2/95/2         28.5        44.1          19               5
+##  4 Con8  #3/5/2/2/95         28.5        NA            20               8
+##  5 Con8  #5/4/3/83/3         28          NA            19               9
+##  6 Mod7  #3/82/3-2           28          45.9          20               5
+##  7 Low7  #111                25.5        44.6          20               3
+##  8 Mod8  #7/82-3-2           26.9        43.2          20               7
+##  9 Mod8  #7/110/3-2          27.5        46            19               8
+## 10 Mod8  #2/95/2             28.5        44.5          20               9
+## 11 Mod8  #82/4               33.4        52.7          20               8
+## 12 Low8  #79                 25.4        43.8          19               8
+## 13 Low8  #108                25.6        47.5          20               8
+## 14 Low8  #110                25.5        42.7          20               7
+## # ... with 2 more variables: pups_dead_birth &lt;int&gt;, pups_survive &lt;int&gt;</code></pre>
+</div>
+<div id="filter-to-include-only-pups-with-sex-1-and-filter-to-include-only-pups-with-pd-walk-less-than-11-and-sex-2." class="section level2">
+<h2>Filter to include only pups with sex 1 and filter to include only pups with pd walk less than 11 and sex 2.</h2>
+<pre class="r"><code>filter(pups_data, sex == 1)</code></pre>
+<pre><code>## # A tibble: 155 x 6
+##   litter_number   sex pd_ears pd_eyes pd_pivot pd_walk
+##   &lt;chr&gt;         &lt;int&gt;   &lt;int&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt;
+## 1 #85               1       4      13        7      11
+## 2 #85               1       4      13        7      12
+## 3 #1/2/95/2         1       5      13        7       9
+## # ... with 152 more rows</code></pre>
+<pre class="r"><code>filter(pups_data, pd_walk &lt; 11, sex == 2)</code></pre>
+<pre><code>## # A tibble: 127 x 6
+##   litter_number   sex pd_ears pd_eyes pd_pivot pd_walk
+##   &lt;chr&gt;         &lt;int&gt;   &lt;int&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt;
+## 1 #1/2/95/2         2       4      13        7       9
+## 2 #1/2/95/2         2       4      13        7      10
+## 3 #1/2/95/2         2       5      13        8      10
+## # ... with 124 more rows</code></pre>
+</div>
+<div id="mutate" class="section level2">
+<h2>Mutate</h2>
+<p>Create variables</p>
+<pre class="r"><code>mutate(litters_data,
+       wt_gain = gd18_weight - gd0_weight,
+       group = tolower(group)
+       )</code></pre>
+<pre><code>## # A tibble: 49 x 9
+##   group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;           &lt;int&gt;
+## 1 con7  #85                 19.7        34.7          20               3
+## 2 con7  #1/2/95/2           27          42            19               8
+## 3 con7  #5/5/3/83/3-3       26          41.4          19               6
+## # ... with 46 more rows, and 3 more variables: pups_dead_birth &lt;int&gt;,
+## #   pups_survive &lt;int&gt;, wt_gain &lt;dbl&gt;</code></pre>
+</div>
+<div id="pipeline" class="section level2">
+<h2>Pipeline</h2>
+<pre class="r"><code>litters_data_raw = read_csv(&quot;./data/FAS_litters.csv&quot;,
+  col_types = &quot;ccddiiii&quot;)
+litters_data_clean_names = janitor::clean_names(litters_data_raw)
+litters_data_selected_cols = select(litters_data_clean_names, -pups_survive)
+litters_data_with_vars = mutate(litters_data_selected_cols, 
+  wt_gain = gd18_weight - gd0_weight,
+  group = tolower(group))
+litters_data_with_vars</code></pre>
+<pre><code>## # A tibble: 49 x 8
+##   group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;           &lt;int&gt;
+## 1 con7  #85                 19.7        34.7          20               3
+## 2 con7  #1/2/95/2           27          42            19               8
+## 3 con7  #5/5/3/83/3-3       26          41.4          19               6
+## # ... with 46 more rows, and 2 more variables: pups_dead_birth &lt;int&gt;,
+## #   wt_gain &lt;dbl&gt;</code></pre>
+<p>Use nested function calls</p>
+<pre class="r"><code>litters_data_clean = 
+  mutate(
+    select(
+      janitor::clean_names(
+        read_csv(&quot;./data/FAS_litters.csv&quot;, col_types = &quot;ccddiiii&quot;)
+        ), 
+    -pups_survive
+    ),
+  wt_gain = gd18_weight - gd0_weight,
+  group = tolower(group)
+  )
+litters_data_clean</code></pre>
+<pre><code>## # A tibble: 49 x 8
+##   group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;           &lt;int&gt;
+## 1 con7  #85                 19.7        34.7          20               3
+## 2 con7  #1/2/95/2           27          42            19               8
+## 3 con7  #5/5/3/83/3-3       26          41.4          19               6
+## # ... with 46 more rows, and 2 more variables: pups_dead_birth &lt;int&gt;,
+## #   wt_gain &lt;dbl&gt;</code></pre>
+</div>
+<div id="piping" class="section level2">
+<h2>piping</h2>
+<pre class="r"><code>read_csv(&quot;./data/FAS_litters.csv&quot;, col_types = &quot;ccddiiii&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  select(-pups_survive) %&gt;% 
+  mutate(
+    wt_gain = gd18_weight - gd0_weight
+  )</code></pre>
+<pre><code>## # A tibble: 49 x 8
+##   group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+##   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;           &lt;int&gt;
+## 1 Con7  #85                 19.7        34.7          20               3
+## 2 Con7  #1/2/95/2           27          42            19               8
+## 3 Con7  #5/5/3/83/3-3       26          41.4          19               6
+## # ... with 46 more rows, and 2 more variables: pups_dead_birth &lt;int&gt;,
+## #   wt_gain &lt;dbl&gt;</code></pre>
+</div>
+<div id="example-practice-of-pipes" class="section level2">
+<h2>Example practice of pipes</h2>
+<p>loads the pups data cleans the variable names filters the data to include only pups with sex 1 removes the PD ears variable creates a variable that indicates whether PD pivot is 7 or more days</p>
+<pre class="r"><code>read_csv(&quot;./data/FAS_pups.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  filter(sex == 1) %&gt;% 
+  select(-pd_ears) %&gt;% 
+  mutate(
+    new_pd = pd_pivot &gt;= 7)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Litter Number` = col_character(),
+##   Sex = col_integer(),
+##   `PD ears` = col_integer(),
+##   `PD eyes` = col_integer(),
+##   `PD pivot` = col_integer(),
+##   `PD walk` = col_integer()
+## )</code></pre>
+<pre><code>## # A tibble: 155 x 6
+##   litter_number   sex pd_eyes pd_pivot pd_walk new_pd
+##   &lt;chr&gt;         &lt;int&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt; &lt;lgl&gt; 
+## 1 #85               1      13        7      11 TRUE  
+## 2 #85               1      13        7      12 TRUE  
+## 3 #1/2/95/2         1      13        7       9 TRUE  
+## # ... with 152 more rows</code></pre>
+</div>
 
 
 
