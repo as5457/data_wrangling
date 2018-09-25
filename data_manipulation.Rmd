@@ -1,0 +1,34 @@
+---
+title: "data_manipulation"
+author: "Sunny Siddique"
+date: "September 18, 2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+## import fas csv file
+
+Import my csv files to use as example
+
+```{r}
+litters_data = read_csv ("./data/FAS_litters.csv")
+litters_data = janitor::clean_names(litters_data)
+```
+
+```{r}
+library(tidyverse)
+
+options(tibble.print_min = 3)
+
+litters_data = read_csv("./data/FAS_litters.csv",
+  col_types = "ccddiiii")
+litters_data = janitor::clean_names(litters_data)
+
+pups_data = read_csv("./data/FAS_pups.csv",
+  col_types = "ciiiii")
+pups_data = janitor::clean_names(pups_data)
+```
+

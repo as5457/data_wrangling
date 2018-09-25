@@ -1,0 +1,61 @@
+---
+title: "data_wrangling"
+author: "Sunny Siddique"
+date: "September 18, 2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+## import fas csv file
+
+Import my first csv.
+
+```{r}
+litters_data = read_csv ("./data/FAS_litters.csv")
+litters_data = janitor::clean_names(litters_data)
+```
+
+```{r}
+pups_data = read_csv ("./data/FAS_pups.csv")
+pups_data = janitor::clean_names(pups_data)
+```
+
+## Looking at the data
+
+```{r}
+head(litters_data)
+tail(litters_data)
+skimr::skim(litters_data)
+```
+
+```{r}
+head(pups_data)
+skimr::skim(pups_data)
+```
+
+
+## Importing data in other formats
+
+Read in MLB data
+```{r}
+mlb_data = readxl::read_excel(path = "./data/mlb11.xlsx")
+mlb_data
+```
+
+Read in subset of MLB data
+```{r}
+mlb_data = readxl::read_excel(path = "./data/mlb11.xlsx",
+                                      range = "A1:E17")
+mlb_data
+```
+
+
+## Read in pulse dataset
+
+```{r}
+pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat")
+pulse_data
+```
