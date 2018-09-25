@@ -1,0 +1,89 @@
+---
+title: "data_tidying"
+author: "Sunny Siddique"
+date: "September 25, 2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+## Gather
+
+PULSE data
+
+```{r}
+pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat") %>% 
+janitor::clean_names()
+```
+
+```{r}
+pulse_tidy = pulse_data %>% 
+  gather(key = "visit", value = "bdi_score", bdi_score_bl:bdi_score_12m)
+```
+
+
+Illusetrate 'separate':
+
+```{r}
+pulse_df = pulse_tidy %>% 
+  separate(visit, into = c("bdi_str", "score_str", "visit"), sep = "_") %>% 
+  select (-bdi_str, -score_str) %>% 
+  mutate(visit = replace (visit, visit == "bl", "00m"))
+```
+
+```{r}
+pulse_df
+```
+
+## Revisit FAS_litters
+
+```{r}
+litters_data = read_csv("./data/FAS_litters.csv", col_types = "ccddiiii") %>% 
+  janitor::clean_names() %>% 
+  separate(group, into = c("dose", "day"), 3)
+```
+
+
+Learning Assessment: In the litters data, the variables gd0_weight and gd18_weight give the weight of the mother mouse on gestational days 0 and 18. Write a data cleaning chain that retains only litter_number and these columns; produces new variables gd and weight; and makes gd a numeric variable taking values 0 and 18 (for the last part, you might want to use  recode …). Is this version “tidy”?
+
+```{r}
+litters_data = read_csv("./data/FAS_litters.csv", col_types = "ccddiiii") %>% 
+  janitor::clean_names() %>% 
+  select(litter_number, ends_with("weight")) %>% 
+  gather(key = "gest_day", value = "weight", gd0_weight:gd18_weight) %>% 
+  arrange(litter_number)
+```
+
+## Spread
+
+```{r}
+analysis_result = tibble(
+  group = c("treatment", "treatment", "placebo", "placebo"),
+  time = c("pre", "post", "pre", "post"),
+  mean = c(4, 8, 3.5, 4)
+)
+```
+
+Make it readable
+
+```{r}
+spread(analysis_result, key = time, value = mean) %>% 
+  knitr::kable()
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
